@@ -11,9 +11,7 @@ public class App {
 
     public static void main(String[] args) throws Exception{
 
-        // Creating a Http connection
-        // String url (actually 404 error) = "https://imdb-api.com/en/API/Top250Movies/k_0ojt0yvm";
-        String url = "https://imdb-api.com/en/API/Top250Movies/k_4wzv07ki";
+        String url = "https://api.nasa.gov/planetary/apod?api_key=2bYT4dOglaGUMXam2rT2Wq45fn0NjNTzbMH57PtQ&start_date=2022-04-01&end_date=2022-04-02";
 
         URI address = URI.create(url);
         var httpClient = HttpClient.newHttpClient();
@@ -23,19 +21,17 @@ public class App {
 
         // Extracting defined data
         JsonParser jsonParser = new JsonParser();
-        List<Map<String, String>> movieList = jsonParser.parse(body);
-        //System.out.println(movieList.size());
-        //System.out.println(body);
+        List<Map<String, String>> pictureList = jsonParser.parse(body);
 
         // Show data collected
         var stickerGenerate = new StickerFactory();
-        //for (Map<String, String> movie: movieList) {
-        for(int i=0; i<10; i++){
+        //for (Map<String, String> picture: pictureList) {
+        for(int i=0; i<2; i++){
 
-            Map<String, String> movie = movieList.get(i);
+            Map<String, String> picture = pictureList.get(i);
 
-            String imageUrl = movie.get("image");
-            String title = movie.get("title");
+            String imageUrl = picture.get("url");
+            String title = picture.get("title");
 
             InputStream inputStream = new URL(imageUrl).openStream();
 
@@ -43,9 +39,7 @@ public class App {
 
             stickerGenerate.generate(inputStream, fileName);
 
-            System.out.println(movie.get("title"));
-            //System.out.println(movie.get("image"));
-            //System.out.println(movie.get("imDbRating"));
+            System.out.println(picture.get("title"));
         }
     }
 }
